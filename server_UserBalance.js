@@ -3,12 +3,13 @@
 const express = require('express');
 const axios = require('axios');
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // MongoDB Connection
-mongoose.connect('mongodb://localhost:27017/cryptoTransactions', {
+mongoose.connect(mongodb, {//Instead of MongoDB give the API key for Mongo database
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
@@ -63,7 +64,7 @@ const calculateUserBalance = async (address) => {
 // Fetch Ethereum Price
 const fetchEthereumPrice = async () => {
     try {
-        const response = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=inr');
+        const response = await axios.get(AxiosAPI);//instead of AxiosAPI give the actual API key
         return response.data.ethereum.inr;
     } catch (error) {
         console.error('Error fetching Ethereum price:', error);

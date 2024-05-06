@@ -1,12 +1,14 @@
 const express = require('express');
 const axios = require('axios');
 const mongoose = require('mongoose');
+require('dotenv').config();
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // MongoDB Connection
-mongoose.connect('mongodb+srv://ronitkumar9874:uiouioui%40123@crypto-database.1hsadev.mongodb.net/', {
+mongoose.connect(MongoDB, {//Instead of MongoDB give the API key for Mongo database
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
@@ -33,7 +35,7 @@ const Transaction = mongoose.model('Transaction', transactionSchema);
 app.get('/transactions/:address', async (req, res) => {
     try {
         const address = req.params.address;
-        const apiKey = 'Y323GSU4V9DEMKGVYYDXZ7IG12XNH3K3XE';
+        const apiKey = EtherscanAPI;//give the original API key from etherscan here.
         const apiUrl = `https://api.etherscan.io/api?module=account&action=txlist&address=${address}&sort=desc&apikey=${apiKey}`;
         const response = await axios.get(apiUrl);
         const transactions = response.data.result;
@@ -51,7 +53,7 @@ app.get('/transactions/:address', async (req, res) => {
 //fetches price 
 const fetchAndStoreEthereumPrice = async () => {
     try {
-        const response = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=inr');
+        const response = await axios.get(AxiosAPI);//instead of AxiosAPI give the actual API key
         const ethereumPrice = response.data.ethereum.inr;
         const EthereumPrice = mongoose.model('EthereumPrice', { price: Number, timestamp: { type: Date, default: Date.now } });
         const newEthereumPrice = new EthereumPrice({ price: ethereumPrice });
