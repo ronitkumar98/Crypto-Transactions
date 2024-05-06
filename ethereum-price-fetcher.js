@@ -1,4 +1,5 @@
 //Ethereum Prices after 10 mins
+//This code has already been added to the server.js fiel and is added here seperately to check and make changes
 const ethereumPriceSchema = new mongoose.Schema({
     price: Number,
     timestamp: { type: Date, default: Date.now }
@@ -17,4 +18,6 @@ const fetchAndStoreEthereumPrice = async () => {
         console.error('Error fetching Ethereum price:', error);
     }
 };
+
+setInterval(fetchAndStoreEthereumPrice, 10 * 60 * 1000);
 
